@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://planetapr.su/</loc>
+        <lastmod>2022-05-07T13:28:48+00:00</lastmod>
+        <priority>1.00</priority>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://planetapr.su/news</loc>
+        <lastmod>2022-05-07T13:28:48+00:00</lastmod>
+        <priority>0.80</priority>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://planetapr.su/tours</loc>
+        <lastmod>2022-05-07T13:28:48+00:00</lastmod>
+        <priority>0.80</priority>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://planetapr.su/transport</loc>
+        <lastmod>2022-05-07T13:28:48+00:00</lastmod>
+        <priority>0.80</priority>
+        <changefreq>monthly</changefreq>
+    </url>
+    <url>
+        <loc>https://planetapr.su/contacts</loc>
+        <lastmod>2022-05-07T13:28:48+00:00</lastmod>
+        <priority>0.90</priority>
+        <changefreq>monthly</changefreq>
+    </url>
+</urlset>

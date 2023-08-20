@@ -1,0 +1,78 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg table-responsive">
+      <table class="table  text-center">
+        <thead>
+          <tr>
+            <th class='align-middle'>Имя</th>
+            <th class='align-middle'>Фамилия</th>
+            <th class='align-middle'>Email</th>
+            <th class='align-middle'>Адрес</th>
+            <th class='align-middle'>Сумма</th>
+            <th class='align-middle'>Дата</th>
+            <th class='align-middle'>Комментарий</th>
+            <th class='align-middle'>Оплачено</th>
+            <th class='align-middle'>Действия</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+            use Phalcon\Tag;
+            foreach($orders as $order) {
+              echo "<tr class='table-primary'>";
+              echo "<td class='align-middle'>".$order->order_name."</td>";
+              echo "<td class='align-middle'>".$order->order_surname."</td>";
+              echo "<td class='align-middle'>".$order->order_email."</td>";
+              echo "<td class='align-middle'>".$order->order_address."</td>";
+              echo "<td class='align-middle'>".$order->order_sum."</td>";
+              echo "<td class='align-middle'>".$order->order_date."</td>";
+              echo "<td class='align-middle'>".$order->order_comment."</td>";
+              if($order->order_paid == 0) {
+                echo "<td class='align-middle'>нет</td>";
+              } else {
+                echo "<td class='align-middle'>да</td>";
+              }
+              $id = $order->order_id;
+              echo "<td class='align-middle'><button class='btn btn btn-danger removeOrderBtn' id='removeOrderBtn$id'>Удалить</button></td>";
+              echo '</tr>';
+              echo "<tr><td colspan='9'><table class='table table-sm table-success text-center'>
+                <thead>
+                  <tr>
+                    <th class='align-middle'>Фото</th>
+                    <th class='align-middle'>Название</th>
+                    <th class='align-middle'>Цена</th>
+                    <th class='align-middle'>Количество</th>
+                  </tr>
+                </thead>
+                <tbody>";
+                foreach($ordersProducts as $ordersProduct) {
+                  if($ordersProduct->order_id == $order->order_id) {
+                    $product_id = $ordersProduct->product_id;
+                    $product = Products::find("product_id='$product_id'");
+                    $title = $product[0]->product_title;
+                    $price = $product[0]->product_price;
+                    echo "<tr>";
+                    echo "<td class='align-middle'>";
+
+                    echo Tag::image(
+                      [
+                        $product[0]->product_photo,
+                        'alt' => 'Product photo',
+                        'class' => 'employeePhotos_admin'
+                      ]
+                    );
+                    echo "</td>";
+                    echo "<td class='align-middle'>$title</td>";
+                    echo "<td class='align-middle'>$price</td>";
+                    echo "<td class='align-middle'>$ordersProduct->product_count</td>";
+                    echo "</tr>";
+                  }
+                }
+                echo "</tbody></table></td></tr>";
+              }
+          ?>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

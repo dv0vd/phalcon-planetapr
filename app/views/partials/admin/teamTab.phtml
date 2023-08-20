@@ -1,0 +1,259 @@
+<ul class="nav nav-tabs mb-2" role="tablist">
+  <li class="nav-item" role="presentation">
+    <a class="nav-link active " id="department-tab" data-toggle="tab" href="#department" role="tab" aria-controls="department" aria-selected="true">Отделы</a>
+  </li>
+  <li class="nav-item" role="presentation">
+    <a class="nav-link" id="employee-tab" data-toggle="tab" href="#employee" role="tab" aria-controls="employee" aria-selected="false">Сотрудники</a>
+  </li>
+</ul>
+<div class="tab-content">
+  <div class="tab-pane fade show active" id="department" role="tabpanel" aria-labelledby="department-tab">
+    <form id='addDepartmentForm' action="/admin/addDepartment" method='post'>
+      <div class="row">
+        <div class="col-lg text-center">
+          <label for="departmentFormName">Название</label>
+          <input type='text' required id='departmentFormName' name='departmentFormName' class="form-control">
+        </div>
+        <div class="col-lg">
+          <div class="row text-center">
+            <div class="col-lg">
+              <label for="departmentFormHidden">Скрытый</label>
+            </div>
+          </div>
+          <div class="row text-center">
+            <div class="col-lg">
+              <input type="checkbox" name='departmentFormHidden' id='departmentFormHidden'>
+            </div>
+          </div>
+        </div>
+        <div class="container-fluid text-center">
+          <div class="row">
+            <div class="col-lg">
+              <button type="submit" class="btn btn-primary mt-2 text-center">Добавить</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <table class="table text-center">
+      <thead>
+        <tr>
+          <th>Название</th>
+          <th>Позиция</th>
+          <th>Скрытый</th>
+          <th>Действия</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php
+          foreach($departments as $department) {
+            $id = $department->department_id;
+            echo "<tr>";
+            echo "<td>".$department->department_name."</td>";
+            echo "<td>".$department->department_position."</td>";
+            if($department->department_hidden == 0) {
+              echo "<td><input type='checkbox' disabled></td>";
+            } else {
+              echo "<td><input type='checkbox' checked disabled></td>";
+            }
+            echo "<td><button class='btn btn btn-danger removeDepartmentBtn' id='removeDepartmentBtn$id'>Удалить</button>
+              <button class='btn btn btn-warning editDepartmentBtn' id='editDepartmentBtn$id' data-toggle='modal' data-target='#staticEditDepartmentModal'>Редактировать</button></td>";
+            echo '</tr>';
+          }
+        ?>
+      </tbody>
+    </table>
+    <div class="modal fade" id="staticEditDepartmentModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticEditDepartmentModal" aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Редактировать</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form id='editDepartmentForm' action="/admin/editDepartment" method='post'>
+            <div class="modal-body" id='staticModalDepartmentEditForm'>
+              <div class="row">
+                <div class="col-lg text-center">
+                  <p>#</p>
+                  <p id='editDepartmentFormId'></p>
+                </div>
+                <div class="col-lg text-center">
+                  <label for="editDepartmentFormName">Название</label>
+                  <input type='text' required id='editDepartmentFormName' name='editDepartmentFormName' class="form-control">
+                </div>
+              </div>
+              <div class="row text-center">
+                <div class="col-lg">
+                  <label for="editDepartmentFormHidden">Скрытый</label><br>
+                  <input type="checkbox" name='editDepartmentFormHidden' id='editDepartmentFormHidden'>
+                </div>
+                <div class="col-lg">
+                  <label for="editDepartmentFormPosition">Позиция</label>
+                  <select class="form-control" name='editDepartmentFormPosition' id="editDepartmentFormPosition">
+                    <?php
+                      for ($i=0; $i<count($departments); $i++) {
+                        echo "<option>$i</option>";
+                      }
+                     ?>
+                  </select>
+                </div>
+              </div>
+            </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+          </div>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-pane fade" id="employee" role="tabpanel" aria-labelledby="employee-tab">
+    <form id='addEmployeeForm' action="/admin/addEmployee" method='post' enctype="multipart/form-data">
+      <div class="row">
+        <div class="col-lg text-center">
+          <label for="employeeFormName">Имя</label>
+          <input type='text' required id='employeeFormName' name='employeeFormName' class="form-control">
+          <label for="employeeFormPost">Должность</label>
+          <input type='text' required id='employeeFormPost' name='employeeFormPost' class="form-control">
+          <label for="employeeFormHidden">Скрытый</label>
+          <input class='mt-3' type="checkbox" name='employeeFormHidden' id='employeeFormHidden'><br>
+          <label for="employeeFormDepartment">Отдел</label>
+          <select class="form-control" name='employeeFormDepartment' id="employeeFormDepartment">
+            <?php
+              foreach ($departments as $department) {
+                $data = $department->department_name;
+                echo "<option>$data</option>";
+              }
+             ?>
+          </select>
+          <label for="employeeFormPhoto">Фото</label>
+          <input class='mt-3' type="file" name='employeeFormPhoto' id='employeeFormPhoto' accept="image/*"><br>
+        </div>
+        <div class="container-fluid text-center">
+          <div class="row">
+            <div class="col-lg">
+              <button type="submit" class="btn btn-primary mt-2 text-center">Добавить</button>
+              <button id='removeFile' class="btn btn-primary mt-2 text-center">Удалить файл</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <table class="table text-center">
+      <thead>
+        <tr>
+          <th>Имя</th>
+          <th>Должность</th>
+          <th>Фото</th>
+          <th>Отдел</th>
+          <th>Позиция</th>
+          <th>Скрытый</th>
+          <th>Действия</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php
+        use Phalcon\Tag;
+          foreach($employees as $employee) {
+            $id = $employee->department_id;
+            echo "<tr>";
+            echo "<td class='align-middle'>".$employee->employee_name."</td>";
+            echo "<td class='align-middle'>".$employee->employee_post."</td>";
+            echo "<td class='align-middle'>";
+            echo Tag::image(
+              [
+                $employee->employee_photo_location,
+                'alt' => 'Employee photo',
+                'class' => 'employeePhotos_admin'
+              ]
+            );
+            echo "</td>";
+            $department = Departments::find("department_id='$id'");
+            $id = $employee->employee_id;
+            echo "<td class='align-middle'>".$department[0]->department_name."</td>";
+            echo "<td class='align-middle'>".$employee->employee_position."</td>";
+            if($employee->employee_hidden == 0) {
+              echo "<td class='align-middle'><input type='checkbox' disabled></td>";
+            } else {
+              echo "<td class='align-middle'><input type='checkbox' checked disabled></td>";
+            }
+            echo "<td class='align-middle'><button class='btn btn btn-danger removeEmployeeBtn' id='removeEmployeeBtn$id'>Удалить</button>
+              <button class='btn btn btn-warning editEmployeeBtn' id='editEmployeeBtn$id' data-toggle='modal' data-target='#staticEditEmployeeModal'>Редактировать</button></td>";
+            echo '</tr>';
+          }
+        ?>
+      </tbody>
+    </table>
+    <div class="modal fade" id="staticEditEmployeeModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticEditEmployeeModal" aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Редактировать</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form id='editEmployeeForm' action="/admin/editEmployee" method='post'>
+            <div class="modal-body">
+              <div class="row">
+                <input type='text' hidden required id='editEmployeeFormId' name='editEmployeeFormId' class="form-control">
+                <div class="col-lg text-center">
+                  <label for="editEmployeeFormName">Имя</label>
+                  <input type='text' required id='editEmployeeFormName' name='editEmployeeFormName' class="form-control">
+                </div>
+                <div class="col-lg text-center">
+                  <label for="editEmployeeFormPost">Должность</label>
+                  <input type='text' required id='editEmployeeFormPost' name='editEmployeeFormPost' class="form-control">
+                </div>
+              </div>
+              <div class="row text-center">
+                <div class="col-lg">
+                  <label for="editEmployeeFormHidden">Скрытый</label><br>
+                  <input type="checkbox" name='editEmployeeFormHidden' id='editEmployeeFormHidden'>
+                </div>
+                <div class="col-lg">
+                  <label for="editEmployeeFormPosition">Позиция</label>
+                  <select class="form-control" name='editEmployeeFormPosition' id="editEmployeeFormPosition">
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg text-center">
+                  <label for="editEmployeeFormDepartment">Отдел</label>
+                  <select class="form-control" name='editEmployeeFormDepartment' id="editEmployeeFormDepartment">
+                    <?php
+                      foreach ($departments as $department) {
+                        echo "<option>$department->department_name</option>";
+                      }
+                    ?>
+                  </select>
+                </div>
+              </div>
+              <div class="row mt-2">
+                <div class="col-lg text-center">
+                <!-- <div class="col-lg text-center" id='formEmployeeImage'> -->
+                  <p>Фото</p>
+                  <div id="oldEmployeePhoto">
+                  </div>
+                </div>
+                <div class="col-lg text-center border border-primary">
+                  <label for="editEmployeeFormNewPhoto">Новое фото</label><br>
+                  <input class='mt-3' type="file" name='editEmployeeFormNewPhoto' id='editEmployeeFormNewPhoto' accept="image/*"><br>
+                  <input class='mt-3' type="checkbox" name='editEmployeeFormWithoutPhoto' id='editEmployeeFormWithoutPhoto'>
+                  <label for="departmentFormHidden">Без фото</label>
+                </div>
+              </div>
+            </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+          </div>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

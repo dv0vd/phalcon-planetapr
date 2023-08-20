@@ -1,0 +1,48 @@
+<?php
+    $this->assets->addCss('css/bootstrap.min.css');
+    $this->assets->addCss('css/style.css');
+    $footerCollection = $this->assets->collection('footerJs');
+    $footerCollection->addJs('js/jquery-3.5.1.min.js');
+    $footerCollection->addJs('js/bootstrap.min.js');
+    $footerCollection->addJs('js/main.js');
+?>
+<!DOCTYPE html>
+<html lang="ru" dir="ltr">
+    <head>
+        <meta charset='utf-8'>
+        <meta name="keywords" content="туристическое агентство, авиабилеты, туры, жд билеты, автобусные билеты, авиакасса, жд касса, бронирование жилья, бронирование отелей, пассажирские перевозки, планета путешествий развлечений, турагентство" />
+        <meta name="yandex-verification" content="82c12996534abb30" />
+        <meta name="google-site-verification" content="K5GbYdWVM0wxWxhwXzcRwnFjJSDfrYjqe-8bocWJP4A" />
+        <meta name="msvalidate.01" content="D189239F6433AA8859184F28E0DA229F" />
+        <meta name='wmail-verification' content='8972a97c5163a9bd598728fa7b43d1fa' />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="<?php echo $description ?>" />
+        <meta name="csrf-token" content="<?php echo $this->security->getToken() ?>">
+        <meta name="csrf-param" content="<?php echo $this->security->getTokenKey() ?>">
+        <?php $this->assets->outputCss(); ?>
+        <title><?php echo $title ?></title>
+        <!-- Yandex.Metrika counter -->
+          <script type="text/javascript" >
+             (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+             m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+             (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+          
+             ym(72995719, "init", {
+                  clickmap:true,
+                  trackLinks:true,
+                  accurateTrackBounce:true,
+                  webvisor:true
+             });
+          </script>
+          <noscript><div><img src="https://mc.yandex.ru/watch/72995719" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+        <!-- /Yandex.Metrika counter -->
+    </head>
+    <body class='bg-dark'>
+        <?php 
+            echo $this->view->getPartial('partials/header');
+            echo $this->view->getContent();
+            echo $this->view->getPartial('partials/footer');
+            $this->assets->outputJs('footerJs'); 
+        ?>
+    </body>
+</html>

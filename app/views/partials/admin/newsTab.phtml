@@ -1,0 +1,90 @@
+<div class="container-fluid">
+  <div class="row mt-5">
+    <form id='addNewsForm' action="/admin/addNews" method='post'  enctype="multipart/form-data">
+      <div class="row">
+        <div class="col-lg text-center">
+          <label for="newsFormHeader" class='text-light'>Заголовок</label>
+          <input type='text' required id='newsFormHeader' name='newsFormHeader' class="form-control">
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-lg">
+          <textarea name="newsDescription" class='bg-secondary' id='newsDescription'></textarea>
+        </div>
+      </div>
+      <div class="row text-center">
+        <div class="col-lg">
+          <button type="submit" class="btn btn-primary mt-2 text-center">Добавить</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="row mt-3">
+    <div class="col-lg table-responsive">
+      <table class="table text-center text-light border">
+        <thead>
+          <tr>
+            <th>Название</th>
+            <th>Действия</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+            foreach($news as $new) {
+              $id = $new->news_id;
+              echo "<tr>";
+              echo "<td>".$new->news_title."</td>";
+              echo "<td><button class='btn btn btn-danger removeNewsBtn' id='removeNewsBtn$id'>Удалить</button>
+                <button class='btn btn btn-warning editNewsBtn' id='editNewsBtn$id' data-toggle='modal' data-target='#staticEditNewsModal'>Редактировать</button></td>";
+              echo '</tr>';
+            }
+          ?>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="modal fade" id="staticEditNewsModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticEditNewsModal" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Редактировать</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form id='editNewsForm' action="/admin/editNews" method='post' enctype="multipart/form-data">
+          <input type='text' hidden name='editNewsFormId' id='editNewsFormId'>
+          <div class="modal-body" id='staticModalNewsEditForm'>
+            <div class="row">
+              <div class="col-lg text-center">
+                <label for="editNewsFormHeader">Заголовок</label>
+                <input type='text' required id='editNewsFormHeader' name='editNewsFormHeader' class="form-control">
+              </div>
+            </div>
+            <div class="row mt-2">
+              <div class="col-lg text-center">
+                <p>Описание</p>
+                <textarea name="editNewsDescription" id='editNewsDescription'></textarea>
+              </div>
+            </div>
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+          <button type="submit" class="btn btn-primary">Сохранить</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+  <script type="text/javascript">
+    CKEDITOR.addCss('.cke_editable { background-color: #6c757d; }');
+    CKEDITOR.replace( 'editNewsDescription', {
+      filebrowserUploadUrl: "/admin/uploadImg",
+      filebrowserUploadMethod: 'form'
+    });
+    CKEDITOR.replace( 'newsDescription', {
+      filebrowserUploadUrl: "/admin/uploadImg",
+      filebrowserUploadMethod: 'form'
+    });
+</script>
